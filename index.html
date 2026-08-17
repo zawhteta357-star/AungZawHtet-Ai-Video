@@ -23,7 +23,7 @@
         <!-- 📝 Script Input -->
         <div>
             <label class="block text-sm font-medium text-purple-300 mb-1">📝 Script ထည့်ရန်</label>
-            <textarea rows="3" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500 text-white" placeholder="သင့်ဗီဒီယိုအတွက် Script ရေးပါ..."></textarea>
+            <textarea id="scriptInput" rows="3" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500 text-white" placeholder="သင့်ဗီဒီယိုအတွက် Script ရေးပါ..."></textarea>
         </div>
 
         <!-- Options Grid -->
@@ -60,15 +60,81 @@
         </div>
 
         <!-- 🚀 Generate Button -->
-        <button onclick="alert('ဗီဒီယို ဖန်တီးနေပါပြီ... ခဏစောင့်ပါ!')" class="w-full mt-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-medium py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center space-x-2 cursor-pointer">
+        <button id="generateBtn" onclick="startGeneration()" class="w-full mt-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-medium py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center space-x-2 cursor-pointer">
             <span>✨ Generate Video (MP4 Export)</span>
         </button>
+
+        <!-- 📊 Progress Bar Section (Initially Hidden) -->
+        <div id="progressSection" class="hidden space-y-2 pt-2">
+            <div class="flex justify-between text-xs text-purple-300">
+                <span id="progressText">ဗီဒီယို စတင်ဖန်တီးနေပါပြီ...</span>
+                <span id="progressPercent">0%</span>
+            </div>
+            <div class="w-full bg-slate-950 border border-slate-800 rounded-full h-3 overflow-hidden">
+                <div id="progressBar" class="bg-gradient-to-r from-purple-500 to-pink-500 h-full w-0 transition-all duration-300"></div>
+            </div>
+        </div>
+
+        <!-- 🎉 Success Result Area (Initially Hidden) -->
+        <div id="resultSection" class="hidden pt-4 border-t border-slate-800 text-center space-y-3">
+            <p class="text-green-400 font-medium text-sm">✅ ဗီဒီယို အောင်မြင်စွာ ထွက်ရှိပါပြီ!</p>
+            <button onclick="alert('MP4 ဖိုင်ကို Download ဆွဲနေပါပြီ...')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium px-6 py-2.5 rounded-xl shadow transition-all cursor-pointer">
+                ⬇️ Download MP4 Video
+            </button>
+        </div>
 
     </main>
 
     <footer class="text-slate-600 text-xs mt-8">
         &copy; 2026 AungZawHtet AI Studio. All rights reserved.
     </footer>
+
+    <!-- JavaScript for Progress & Simulation -->
+    <script>
+        function startGeneration() {
+            const script = document.getElementById('scriptInput').value.trim();
+            if (!script) {
+                alert('ကျေးဇူးပြု၍ Script တစ်ခုခု အရင်ရေးထည့်ပါ!');
+                return;
+            }
+
+            const btn = document.getElementById('generateBtn');
+            const progressSec = document.getElementById('progressSection');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const progressPercent = document.getElementById('progressPercent');
+            const resultSec = document.getElementById('resultSection');
+
+            // Disable button & show progress
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            progressSec.classList.remove('hidden');
+            resultSec.classList.add('hidden');
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                progressBar.style.width = progress + '%';
+                progressPercent.innerText = progress + '%';
+
+                if (progress === 30) {
+                    progressText.innerText = '🎙️ Myanmar Voice ထည့်သွင်းနေသည်...';
+                } else if (progress === 60) {
+                    progressText.innerText = '💬 Subtitle နှင့် Auto Edit ပြုလုပ်နေသည်...';
+                } else if (progress === 90) {
+                    progressText.innerText = '🎬 MP4 Video အပြီးသတ် Export ဆွဲနေသည်...';
+                }
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    progressSec.classList.add('hidden');
+                    resultSec.classList.remove('hidden');
+                }
+            }, 300);
+        }
+    </script>
 
 </body>
 </html>
