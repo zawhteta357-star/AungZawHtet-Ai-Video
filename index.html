@@ -4,31 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AungZawHtet AI Video Studio</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="bg-slate-950 text-white min-h-screen flex flex-col items-center p-4">
 
-    <!-- Header Section -->
     <header class="text-center my-6">
         <h1 class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
             AungZawHtet AI Video Studio
         </h1>
-        <p class="text-slate-400 text-sm mt-2">Welcome to your AI creation hub</p>
+        <p class="text-slate-400 text-sm mt-2">Free AI Video Generation Hub</p>
     </header>
 
-    <!-- Main Studio Box -->
     <main class="w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
         
-        <!-- 📝 Script Input -->
         <div>
-            <label class="block text-sm font-medium text-purple-300 mb-1">📝 Script ထည့်ရန်</label>
-            <textarea id="scriptInput" rows="3" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500 text-white" placeholder="သင့်ဗီဒီယိုအတွက် Script ရေးပါ..."></textarea>
+            <label class="block text-sm font-medium text-purple-300 mb-1">📝 Script / Prompt (အင်္ဂလိပ်လို ရေးပါက ပိုကောင်းပါသည်)</label>
+            <textarea id="scriptInput" rows="3" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500 text-white" placeholder="ဥပမာ - A cute boy opening a box, 3D animation..."></textarea>
         </div>
 
-        <!-- Options Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- 🎙️ Myanmar Voice -->
             <div>
                 <label class="block text-sm font-medium text-purple-300 mb-1">🎙️ Myanmar Voice</label>
                 <select class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500 text-white">
@@ -37,7 +31,6 @@
                 </select>
             </div>
 
-            <!-- 📱 Video Ratio -->
             <div>
                 <label class="block text-sm font-medium text-purple-300 mb-1">📱 Video Size</label>
                 <select class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500 text-white">
@@ -47,40 +40,28 @@
             </div>
         </div>
 
-        <!-- 🖼️ Scene/Images & Subtitle Toggles -->
-        <div class="flex flex-wrap gap-4 pt-2">
-            <label class="flex items-center space-x-2 text-sm text-slate-300 cursor-pointer">
-                <input type="checkbox" checked class="rounded border-slate-700 text-purple-600 focus:ring-purple-500 bg-slate-950">
-                <span>💬 Myanmar Subtitle ထည့်မည်</span>
-            </label>
-            <label class="flex items-center space-x-2 text-sm text-slate-300 cursor-pointer">
-                <input type="checkbox" checked class="rounded border-slate-700 text-purple-600 focus:ring-purple-500 bg-slate-950">
-                <span>🎬 Auto Edit ပြုလုပ်မည်</span>
-            </label>
-        </div>
-
-        <!-- 🚀 Generate Button -->
-        <button id="generateBtn" onclick="startGeneration()" class="w-full mt-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-medium py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center space-x-2 cursor-pointer">
-            <span>✨ Generate Video (MP4 Export)</span>
+        <button id="generateBtn" onclick="generateAIVideo()" class="w-full mt-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-medium py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center space-x-2 cursor-pointer">
+            <span>✨ Generate Free AI Video</span>
         </button>
 
-        <!-- 📊 Progress Bar Section (Initially Hidden) -->
         <div id="progressSection" class="hidden space-y-2 pt-2">
             <div class="flex justify-between text-xs text-purple-300">
-                <span id="progressText">ဗီဒီယို စတင်ဖန်တီးနေပါပြီ...</span>
-                <span id="progressPercent">0%</span>
+                <span id="progressText">AI က ဗီဒီယို စတင်ဖန်တီးနေပါပြီ (ခဏစောင့်ပါ)...</span>
+                <span id="progressPercent">လုပ်ဆောင်နေသည်</span>
             </div>
             <div class="w-full bg-slate-950 border border-slate-800 rounded-full h-3 overflow-hidden">
-                <div id="progressBar" class="bg-gradient-to-r from-purple-500 to-pink-500 h-full w-0 transition-all duration-300"></div>
+                <div id="progressBar" class="bg-gradient-to-r from-purple-500 to-pink-500 h-full w-full animate-pulse"></div>
             </div>
         </div>
 
-        <!-- 🎉 Success Result Area (Initially Hidden) -->
         <div id="resultSection" class="hidden pt-4 border-t border-slate-800 text-center space-y-3">
             <p class="text-green-400 font-medium text-sm">✅ ဗီဒီယို အောင်မြင်စွာ ထွက်ရှိပါပြီ!</p>
-            <button onclick="alert('MP4 ဖိုင်ကို Download ဆွဲနေပါပြီ...')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium px-6 py-2.5 rounded-xl shadow transition-all cursor-pointer">
-                ⬇️ Download MP4 Video
-            </button>
+            
+            <video id="outputVideo" controls class="w-full max-h-80 rounded-xl border border-slate-700 mx-auto"></video>
+
+            <a id="downloadBtn" download="AungZawHtet_AI_Video.mp4" class="inline-block bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium px-6 py-2.5 rounded-xl shadow transition-all cursor-pointer">
+                ⬇️ Download MP4 Video ဖိုင်ရယူရန်
+            </a>
         </div>
 
     </main>
@@ -89,50 +70,59 @@
         &copy; 2026 AungZawHtet AI Studio. All rights reserved.
     </footer>
 
-    <!-- JavaScript for Progress & Simulation -->
     <script>
-        function startGeneration() {
-            const script = document.getElementById('scriptInput').value.trim();
-            if (!script) {
-                alert('ကျေးဇူးပြု၍ Script တစ်ခုခု အရင်ရေးထည့်ပါ!');
+        async function generateAIVideo() {
+            const prompt = document.getElementById('scriptInput').value.trim();
+            if (!prompt) {
+                alert('ကျေးဇူးပြု၍ ဗီဒီယိုအတွက် ဇာတ်ညွှန်း (သို့) အကြောင်းအရာ အရင်ရေးထည့်ပါ!');
                 return;
             }
 
             const btn = document.getElementById('generateBtn');
             const progressSec = document.getElementById('progressSection');
-            const progressBar = document.getElementById('progressBar');
-            const progressText = document.getElementById('progressText');
-            const progressPercent = document.getElementById('progressPercent');
             const resultSec = document.getElementById('resultSection');
+            const outputVideo = document.getElementById('outputVideo');
+            const downloadBtn = document.getElementById('downloadBtn');
 
-            // Disable button & show progress
+            // UI ပြောင်းလဲခြင်း
             btn.disabled = true;
             btn.classList.add('opacity-50', 'cursor-not-allowed');
             progressSec.classList.remove('hidden');
             resultSec.classList.add('hidden');
 
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += 10;
-                progressBar.style.width = progress + '%';
-                progressPercent.innerText = progress + '%';
+            try {
+                // Free Public AI Model (Hugging Face Video Generation API) ကို ချိတ်ဆက်ခြင်း
+                const response = await fetch("https://api-inference.huggingface.co/models/camenduru/text-to-video-ms-1.7b", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ inputs: prompt })
+                });
 
-                if (progress === 30) {
-                    progressText.innerText = '🎙️ Myanmar Voice ထည့်သွင်းနေသည်...';
-                } else if (progress === 60) {
-                    progressText.innerText = '💬 Subtitle နှင့် Auto Edit ပြုလုပ်နေသည်...';
-                } else if (progress === 90) {
-                    progressText.innerText = '🎬 MP4 Video အပြီးသတ် Export ဆွဲနေသည်...';
+                if (!response.ok) {
+                    throw new Error("ဗီဒီယို ထုတ်လုပ်ရာတွင် အမှားအယွင်း ရှိသွားပါသည်။ ခဏနေမှ ထပ်ကြိုးစားပါ။");
                 }
 
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    btn.disabled = false;
-                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                    progressSec.classList.add('hidden');
-                    resultSec.classList.remove('hidden');
-                }
-            }, 300);
+                // ဗီဒီယိုဖိုင်အစစ်ကို Blob အနေဖြင့် ရယူခြင်း
+                const blob = await response.blob();
+                const videoUrl = URL.createObjectURL(blob);
+
+                // ဗီဒီယိုပြသရန်နှင့် Download လင့်ချိတ်ရန်
+                outputVideo.src = videoUrl;
+                downloadBtn.href = videoUrl;
+
+                // အောင်မြင်မှုပြရန်
+                progressSec.classList.add('hidden');
+                resultSec.classList.remove('hidden');
+
+            } catch (error) {
+                alert("AI Server တွင် ဝန်ထုပ်ဝန်ပိုး များနေပါသဖြင့် ခဏစောင့်ပြီးမှ ထပ်ကြိုးစားပါ။ (သို့မဟုတ် အင်္ဂလိပ်စာသားဖြင့် ရေးပါ)");
+                progressSec.classList.add('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
         }
     </script>
 
